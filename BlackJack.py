@@ -48,23 +48,27 @@ def round2(current_deck, Dcard1_value):
             card = draw(current_deck)
             dealer_cards.append(card)
             
-            Dcard1, Dcard2 = ''.join(dealer_cards)
+            Dcard1, Dcard2 = dealer_cards
             
+            Dcard1_value = card_evaluation.get(Dcard1)
             Dcard2_value = card_evaluation.get(Dcard2)
             
             total_Dcard_value = Dcard1_value + Dcard2_value
-            
+        print()
     elif player_input in standList:
         if Dcard1_value <= 16:
             card = draw(current_deck)
             dealer_cards.append(card)
+
+            Pcard1, Pcard2 = player_cards
+            Dcard1, Dcard2 = dealer_cards
             
-            Dcard1, Dcard2 = ''.join(dealer_cards)
-            
+            Dcard1_value = card_evaluation.get(Dcard1)
             Dcard2_value = card_evaluation.get(Dcard2)
             
             total_Dcard_value = Dcard1_value + Dcard2_value
 
+            print("You stand with your {} and {} the dealer draws again and reveals his cards to be a {} and a {}".format(Pcard1, Pcard2, Dcard1, Dcard2))
     black_jack()
 def round1(current_deck):
     
@@ -81,7 +85,8 @@ def round1(current_deck):
     except:
         print("Invalid Data Type Please input Integer")
         return setting()
-    global player_cards, dealer_cards
+    clear()
+    global player_cards, dealer_cards, Dcard1_value, total_Pcard_value, Pcard1, Pcard2
 
     player_cards = []
     dealer_cards = []
@@ -126,9 +131,9 @@ def deck_generator():
     deck = []
     global card_evaluation
     for i in suit:
-        for h in card:
+        for ii in card:
             card_values.extend([11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10])
-            deck.append(h + 'of' + i)
+            deck.append(ii + 'of' + i)
           
           #making a global Dictonary using the deck and their corresponding values  
     card_evaluation = dict(zip(deck, card_values))
@@ -161,7 +166,7 @@ def setting():
     
 if __name__ == "__main__":
     
-    print("Thank You For Playing my BlackJack Game Version 1.0.0 Working Build")
+    print("Thank You For Playing my BlackJack Game Version 1.0.0 Build")
     os.system("pause")
     clear()
     
