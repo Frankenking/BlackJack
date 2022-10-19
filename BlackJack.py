@@ -22,26 +22,66 @@ def draw(current_deck):
     current_deck.pop(card_remove)
     return(card)
 
-def phase2(current_deck):
+def black_jack():
+    os.system('pause')
+
+def round2(current_deck, Dcard1_value):
     player_input = str(input("What would you like to do?:\n (Hit, Stand, Or Double Down) "))
     player_input = player_input.lower()
-    #phase 3
-        ################################################################
-    
-    
-def game(current_deck):
+    if player_input in hitList or player_input in ddList:
+        card = draw(current_deck)
+        player_cards.append(card)
+        
+        Pcard1, Pcard2, Pcard3 = player_cards
+        
+        Pcard1_value = card_evaluation.get(Pcard1)
+        Pcard2_value = card_evaluation.get(Pcard2)
+        Pcard3_value = card_evaluation.get(Pcard3)
+        
+        total_Pcard_value = Pcard1_value + Pcard2_value + Pcard3_value
+        
+        if player_input in ddList:
+            global double_down
+            double_down = True
+        
+        if Dcard1_value <= 16:
+            card = draw(current_deck)
+            dealer_cards.append(card)
+            
+            Dcard1, Dcard2 = ''.join(dealer_cards)
+            
+            Dcard2_value = card_evaluation.get(Dcard2)
+            
+            total_Dcard_value = Dcard1_value + Dcard2_value
+            
+    elif player_input in standList:
+        if Dcard1_value <= 16:
+            card = draw(current_deck)
+            dealer_cards.append(card)
+            
+            Dcard1, Dcard2 = ''.join(dealer_cards)
+            
+            Dcard2_value = card_evaluation.get(Dcard2)
+            
+            total_Dcard_value = Dcard1_value + Dcard2_value
+
+    black_jack()
+def round1(current_deck):
     
     clear()
-    print(ascii.money)
-    
-    #valid boundries check
-    print("Your Money: ", starting_money)
-    pot_money = int(input("How Much Would you like to put in the pot: "))
-    if pot_money > starting_money or pot_money < 0:
-        print("You cant put that much in")
-        return(0)
-    
-    global player_cards, dealer_cards, total_Pcard_value, Dcard1_value
+    try:
+        print(ascii.money)
+        
+        #valid boundries check
+        print("Your Money: ", starting_money)
+        pot_money = int(input("How Much Would you like to put in the pot: "))
+        if pot_money > starting_money or pot_money < 0:
+            print("You cant put that much in")
+            return(0)
+    except:
+        print("Invalid Data Type Please input Integer")
+        return setting()
+    global player_cards, dealer_cards
 
     player_cards = []
     dealer_cards = []
@@ -58,7 +98,7 @@ def game(current_deck):
     Pcard1, Pcard2 = player_cards
     Dcard1 = ''.join(dealer_cards)
     
-    #total
+    #total using dict keys
     Pcard1_value = card_evaluation.get(Pcard1)
     Pcard2_value = card_evaluation.get(Pcard2)
     total_Pcard_value = Pcard1_value + Pcard2_value
@@ -74,7 +114,7 @@ def game(current_deck):
     print("You have a {} the Dealer has a {} this totals to you having {} in total and him {}".format(Pcard1 + ' and a ' + Pcard2, Dcard1, total_Pcard_value, Dcard1_value))
     os.system("pause")
     
-    phase2(current_deck)
+    round2(current_deck, Dcard1_value)
     
         
 def deck_generator():
@@ -110,11 +150,15 @@ def setting():
     ddList = ('dd', 'doubledown', 'double down', 'all in')
     standList = ('s', 'stand')
     
-    #starting money input
-    global starting_money
-    starting_money = int(input("Starting Money: "))
+    try:
+        #starting money input
+        global starting_money
+        starting_money = int(input("Starting Money: "))
+    except:
+        print("Invalid Data Type Please Input a Integer")
+    round1(current_deck)
     
-    game(current_deck)
+    
 if __name__ == "__main__":
     
     print("Thank You For Playing my BlackJack Game Version 1.0.0 Working Build")
