@@ -1,83 +1,129 @@
-#Made by Artyom Curtis
-#10/17/22
-#BlackJack.py
-
+print("""
+Made by Artyom Curtis
+10/17/22
+BlackJack.py
+""")
 
 
 
     #packages
 import ascii_assets as ascii
-import time
-import ai
 import random
+import os
+import time
 
-def cardselect(cardlist):
-    for _ in range(2):
-        card = ai.dealerai()
-        if card == 0:
-                pass
-        else:
-                card -= 1
-        print(card)
-        print(cardlist[card])
-        cardlist.pop(card)
-        return(card)
+def clear():
+    os.system('CLS')
 
-def game(settings, cardlist):
+#Picking a card from the avaliable length of the list storing it then finding the index of it and removing it
+def draw(current_deck):
+    card = current_deck[random.randint(0,len(current_deck)-1)]
+    card_remove = current_deck.index(card)
+    current_deck.pop(card_remove)
+    return(card)
 
-    money, ai_players, intelligence = settings[:3]
-    print(money, ai_players, intelligence)
+def phase2(current_deck):
+    player_input = str(input("What would you like to do?:\n (Hit, Stand, Or Double Down) "))
+    player_input = player_input.lower()
+    #phase 3
+        ################################################################
     
+    
+def game(current_deck):
+    
+    clear()
+    print(ascii.money)
+    
+    #valid boundries check
+    print("Your Money: ", starting_money)
+    pot_money = int(input("How Much Would you like to put in the pot: "))
+    if pot_money > starting_money or pot_money < 0:
+        print("You cant put that much in")
+        return(0)
+    
+    global player_cards, dealer_cards, total_Pcard_value, Dcard1_value
+
     player_cards = []
-    ai1_cards = []
-    ai2_cards = []
-    player_cards.append(cardselect(cardlist))
-    ai1_cards.append(cardselect(cardlist))
-    ai2_cards.append(cardselect(cardlist))
-
-    print("You have", player_cards,"Ai1:", ai1_cards,"Ai2:", ai2_cards)
-
-
+    dealer_cards = []
+    
+    #manual draws
+    for _ in range(2):
+        card = draw(current_deck)
+        player_cards.append(card)
         
+    card = draw(current_deck)
+    dealer_cards.append(card)
+    
+    #to strings
+    Pcard1, Pcard2 = player_cards
+    Dcard1 = ''.join(dealer_cards)
+    
+    #total
+    Pcard1_value = card_evaluation.get(Pcard1)
+    Pcard2_value = card_evaluation.get(Pcard2)
+    total_Pcard_value = Pcard1_value + Pcard2_value
+    
+    Dcard1_value = card_evaluation.get(Dcard1)
+    
+    print("The dealer deals you a ", Pcard1)
+    time.sleep(1)
+    print("Then himself a", Dcard1)
+    time.sleep(1)
+    print("Then back to you a", Pcard2)
+    time.sleep(1)
+    print("You have a {} the Dealer has a {} this totals to you having {} in total and him {}".format(Pcard1 + ' and a ' + Pcard2, Dcard1, total_Pcard_value, Dcard1_value))
+    os.system("pause")
+    
+    phase2(current_deck)
+    
+        
+def deck_generator():
+        #deck maker
+    card = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King']
+    suit = ["Spades", "Hearts", "Clubs", "Diamonds"]
+    
+    card_values = []
+    deck = []
+    global card_evaluation
+    for i in suit:
+        for h in card:
+            card_values.extend([11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10])
+            deck.append(h + 'of' + i)
+          
+          #making a global Dictonary using the deck and their corresponding values  
+    card_evaluation = dict(zip(deck, card_values))
+    
 
-    #game settings
+    return(deck)
+
+    #player input settings
 def setting():
+    
     print(ascii.settings)
+    
+    current_deck = deck_generator()
+    
+    #tuple option
+    global hitList, ddList, standList
 
-
-    start_money = float(input("Money to Start With: "))
-    ai_players_amount = int(input("How many Ai players (Max 2): "))
-    ai_intelligence_factor = int(input("Ai BlackJack Smarts 0-10: "))
-
-    if ai_players_amount > 2 or ai_players_amount < 0:
-        print("Invalid Selection Of Ai Players Please Choose between 0-3") 
-        return setting()   
-
-
-    elif ai_intelligence_factor > 10 or ai_intelligence_factor < 0:
-        print("Invalid Ai Intelligence Factor Please Choose between 0-10")
-        return setting()
-
-
-    return(start_money, ai_players_amount, ai_intelligence_factor)
-
-def main():
-            #cardlist a = redheart, b = blackspade, c = blackclub, d = rediamond
-    cardlist = [
-        'a2','a3','a4','a5','a6','a7','a8','a9','a10','aj10','aq10','ak10','a11',
-        'b2','b3','b4','b5','b6','b7','b8','b9','b10','bj10','bq10','bk10','b11',
-        'c2','c3','c4','c5','c6','c7','c8','c9','c10','cj10','cq10','ck10','c11',
-        'd2','d3','d4','d5','d6','d7','d8','d9','d10','dj10','dq10','dk10','d11',
-        ]
-
-    print(ascii.black_jack)
-    time.sleep(1.5)
-    settings = setting()
-    game(settings, cardlist)
-
-
+    hitList = ('h', 'hit', 'deal', 'dealme', 'deal me')
+    ddList = ('dd', 'doubledown', 'double down', 'all in')
+    standList = ('s', 'stand')
+    
+    #starting money input
+    global starting_money
+    starting_money = int(input("Starting Money: "))
+    
+    game(current_deck)
 if __name__ == "__main__":
-    print("Thank You For Playing my BlackJack Game Vr 1.0.0")
-    time.sleep(2)
-    main()
+    
+    print("Thank You For Playing my BlackJack Game Version 1.0.0 Working Build")
+    os.system("pause")
+    clear()
+    
+    print(ascii.black_jack)
+    os.system("pause")
+    clear()
+    
+    setting()
     
