@@ -57,12 +57,17 @@ def shuffle_deck():
 def Win_scenario():
     if total_dcard > 21 and total_pcard <= 21:
         print("Dealer Bust! {}, You Win!, {}".format(total_dcard, total_pcard))
+        win = True
     elif total_pcard > 21:
         print("You Bust.. {}, Dealer Wins!, {}".format(total_pcard, total_dcard))
+        win = False
     elif total_pcard > total_dcard:
         print("You Win!, {}".format(total_pcard))
+        win = True
     else:
         print("Dealer Wins, {}".format(total_dcard))
+        win = False
+    return win
     breakf()
 def Optional(x):
 
@@ -91,7 +96,11 @@ def Optional(x):
         
     print(dealer_cards, player_cards)
 def __Game__():
-    global player_cards, dealer_cards, player_cards_value, dealer_cards_value, total_dcard, total_pcard
+    
+    global player_cards, pot_money, dealer_cards, player_cards_value, dealer_cards_value, total_dcard, total_pcard, money, hlist, slist, ylist, money_
+
+
+    
 
     stand = True
     total_pcard = int()
@@ -103,6 +112,31 @@ def __Game__():
     player_cards_value = []
     dealer_cards_value = []
 
+    ylist = ('y', 'yes')
+    hlist = ('h', 'hit')
+    slist = ('s', 'stand')
+
+    shuffle_deck()
+    
+    print("Welcome To BlackJack, Made by Artyom Curtis Version {}".format(version))
+    pause()
+    clear()
+
+    print(ascii.black_jack)
+    pause()
+    clear()
+    
+    print(ascii.settings)
+    money = int(input("Please Input the Money to Start With:\n"))
+    money_ = money
+    clear()
+    
+    pot_money = int(input("Money to Put into Pot:\n"))
+    money -= pot_money
+    print("Money In Pot: {}\n Money In Balance: {}".format(pot_money, money))
+    pause()
+    clear()
+    
     for _ in range(2):
         card = hit()
         player_cards.append(card)
@@ -140,7 +174,7 @@ def __Game__():
     print("This Gives you a hand worth {} and him a hand worth at least {}".format(total_pcard, dealer_cards_value[0]))
     pause()
     clear()
-    
+
     print(total_dcard, total_pcard)
 
 
@@ -167,7 +201,7 @@ def __Game__():
                     print("Hit was over 21 failure")
                     trigger = True
                     stand = False
-                    Win_scenario()
+                    win = Win_scenario()
                 else:
                     for element in range(2 + i, len(dealer_cards_value)):
                         total_dcard += dealer_cards_value[element]
@@ -176,46 +210,30 @@ def __Game__():
                             print("Hit was over 21 failure")
                             trigger = True
                             stand = False
-                            Win_scenario()
+                            win = Win_scenario()
                 i += 1
 
                 print(total_dcard, total_pcard)
 
     if trigger == False and stand == False:
-        Win_scenario()
-
-    breakf()
-
-
-def __Set__():
+        win = Win_scenario()
     
-    global money, pot_money, hlist, slist
+    if win == False:
+        pot_money = 0
+        
+    if money > 0:
+        print("Would you like to play again? Balance Left: {}".format(money))
+        y = str(input("\nY/N: "))
+        y = y.lower()
+        if y in ylist:
+            return __Game__()
+        else:
+            money__ = money_ + money
+            print("You Entered With {} and left with {} a difference of {}".format(money_, money, money__))
 
-    hlist = ('h', 'hit')
-    slist = ('s', 'stand')
-
-    shuffle_deck()
     
-    print("Welcome To BlackJack, Made by Artyom Curtis Version {}".format(version))
-    pause()
-    clear()
-
-    print(ascii.black_jack)
-    pause()
-    clear()
-    
-    print(ascii.settings)
-    money = int(input("Please Input the Money to Start With:\n"))
-    clear()
-
-    pot_money = int(input("Money to Put into Pot:\n"))
-    money -= pot_money
-    print("Money In Pot: {}\n Money In Balance: {}".format(pot_money, money))
-    pause()
-    clear()
 
 
 if __name__ == "__main__":
     version = '1.0.0'
-    __Set__()
     __Game__()
