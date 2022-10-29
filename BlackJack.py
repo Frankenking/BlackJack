@@ -64,43 +64,46 @@ def Win_scenario():
     elif total_pcard > total_dcard:
         print("You Win!, {}".format(total_pcard))
         win = True
+    elif total_pcard == total_dcard:
+        win = None
     else:
         print("Dealer Wins, {}".format(total_dcard))
         win = False
+
     return win
-    breakf()
+
 def Optional(x):
 
     x = x.lower()
 
     if x in hlist:
-        print('hitlist')
+        print('You Hit')
         card = hit()
         player_cards.append(card)
-        print("Player Drew assumming hit")
+        print("You Drew: ", card)
         if total_dcard <= 16:
             card = hit()
             dealer_cards.append(card)
-            print("Dealer Drew assuming hit or stand")
+            print("Dealer Drew a Unkown Card")
         return True
     elif x in slist:
-        print('slist')
+        print('You Stand')
         if total_dcard <= 16:
             card = hit()
             dealer_cards.append(card)
-            print("Dealer Drew assuming hit or stand")
+            print("Dealer Drew a Unkown Card")
 
         return False
     else:
         print("Invalid Option")
         
     print(dealer_cards, player_cards)
-def __Game__():
-    
-    global player_cards, pot_money, dealer_cards, player_cards_value, dealer_cards_value, total_dcard, total_pcard, money, hlist, slist, ylist, money_
+
+def __Game__(money, money_):
+
+    global player_cards, pot_money, dealer_cards, player_cards_value, dealer_cards_value, total_dcard, total_pcard, hlist, slist, ylist
 
 
-    
 
     stand = True
     total_pcard = int()
@@ -118,18 +121,12 @@ def __Game__():
 
     shuffle_deck()
     
-    print("Welcome To BlackJack, Made by Artyom Curtis Version {}".format(version))
-    pause()
-    clear()
 
     print(ascii.black_jack)
     pause()
     clear()
     
-    print(ascii.settings)
-    money = int(input("Please Input the Money to Start With:\n"))
-    money_ = money
-    clear()
+    
     
     pot_money = int(input("Money to Put into Pot:\n"))
     money -= pot_money
@@ -191,14 +188,12 @@ def __Game__():
             
             for i in range(1):
                 
-                if stand == True:
+                if stand:
 
                     for element in range(2 + i, len(player_cards_value)):
                         total_pcard += player_cards_value[element]
-                
 
                 if total_pcard >= 21:
-                    print("Hit was over 21 failure")
                     trigger = True
                     stand = False
                     win = Win_scenario()
@@ -207,7 +202,6 @@ def __Game__():
                         total_dcard += dealer_cards_value[element]
                         
                         if total_dcard >= 21:
-                            print("Hit was over 21 failure")
                             trigger = True
                             stand = False
                             win = Win_scenario()
@@ -218,22 +212,53 @@ def __Game__():
     if trigger == False and stand == False:
         win = Win_scenario()
     
-    if win == False:
-        pot_money = 0
         
+    if money == 0:
+        if pot_money > 0 and win:
+            money += pot_money + pot_money
+
+        elif pot_money > 0 and win == None:
+            money += pot_money
+
     if money > 0:
+
         print("Would you like to play again? Balance Left: {}".format(money))
         y = str(input("\nY/N: "))
         y = y.lower()
         if y in ylist:
-            return __Game__()
+            if win == False:
+                money -= pot_money
+            elif win:
+                money += pot_money + pot_money
+            elif win == None:
+                money += pot_money
+            
+            pot_money = 0
+            return __Game__(money, money_)
         else:
-            money__ = money_ + money
-            print("You Entered With {} and left with {} a difference of {}".format(money_, money, money__))
+            if win == False:
+                money -= pot_money
+            elif win:
+                money += pot_money
+            elif win == None:
+                money += pot_money
 
-    
+            pot_money = 0
+            print("You Entered With {} and left with {}".format(money_, money))
+            pause()
+
 
 
 if __name__ == "__main__":
     version = '1.0.0'
-    __Game__()
+    
+    print("Welcome To BlackJack, Made by Artyom Curtis Version {}".format(version))
+    pause()
+    clear()
+
+    print(ascii.settings)
+    money = int(input("Please Input the Money to Start With:\n"))
+    money_ = money
+    clear()
+
+    __Game__(money, money_)
