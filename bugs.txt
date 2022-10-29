@@ -1,0 +1,23 @@
+#10/29/2022 supposed to raise exeption however when a exception is raised nothing happens and it just gives an error and crashes
+
+if __name__ == "__main__":
+    version = '1.0.0'
+    
+    print("Welcome To BlackJack, Made by Artyom Curtis Version {}".format(version))
+    pause()
+    clear()
+
+    print(ascii.settings)
+    #strange bug or i dont understand try/except
+    try:
+        money = int(input("Please Input the Money to Start With:\n"))
+    except:
+        print("Invalid Input Integers Only")
+    else:
+        if money <= 0:
+                print("Invalid Amount")
+        else:
+                money_ = money
+                clear()
+
+                __Game__(money, money_)

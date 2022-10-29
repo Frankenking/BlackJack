@@ -126,9 +126,19 @@ def __Game__(money, money_):
     pause()
     clear()
     
-    
-    
-    pot_money = int(input("Money to Put into Pot:\n"))
+    #FIX THIS SHIT PLEASE
+    pot_money = input("Money to Put into Pot:\n")
+    if not type(pot_money) is int:
+        pass
+    if pot_money > money:
+            print("You dont have that Money!")
+            pause()
+            return __Game__(money, money_)
+    elif pot_money <= 0:
+            print("Invalid Amount")
+            pause()
+            return __Game__(money, money_)
+        
     money -= pot_money
     print("Money In Pot: {}\n Money In Balance: {}".format(pot_money, money))
     pause()
@@ -257,8 +267,9 @@ if __name__ == "__main__":
     clear()
 
     print(ascii.settings)
-    money = int(input("Please Input the Money to Start With:\n"))
+    money = 1000
     money_ = money
-    clear()
-
     __Game__(money, money_)
+            
+            
+    
