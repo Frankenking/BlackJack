@@ -24,6 +24,7 @@ def clear():
 
 
 def ace_check(entryhand, cardsvalue):
+    #if a name contains 'ace' then find the index of it in hand(s) then translate that index to the handvalue if above 16 into 1 else 11
     pass
 
 
