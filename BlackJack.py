@@ -23,9 +23,19 @@ def clear():
     os.system('cls')
 
 
-def ace_check(entryhand, cardsvalue):
-    #if a name contains 'ace' then find the index of it in hand(s) then translate that index to the handvalue if above 16 into 1 else 11
-    pass
+def ace_check(handvalue, total):
+    total = total
+    for element in handvalue:
+        if element == 11 and total > 21:
+            total -= 11
+            return total
+
+        else:
+            return total
+    
+    
+            
+            
 
 
 def hit():
@@ -66,6 +76,7 @@ def Win_scenario():
         print("You Win!, {}".format(total_pcard))
         win = True
     elif total_pcard == total_dcard:
+        print("Tie!")
         win = None
     else:
         print("Dealer Wins, {}".format(total_dcard))
@@ -95,10 +106,7 @@ def Optional(x):
             print("Dealer Drew a Unkown Card")
 
         return False
-    else:
-        print("Invalid Option")
         
-    print(dealer_cards, player_cards)
 
 def __Game__(money, money_):
 
@@ -127,10 +135,8 @@ def __Game__(money, money_):
     pause()
     clear()
     
-    #FIX THIS SHIT PLEASE
-    pot_money = input("Money to Put into Pot:\n")
-    if not type(pot_money) is int:
-        pass
+    #FIX THIS
+    pot_money = int(input("Money to Put into Pot:\n"))
     if pot_money > money:
             print("You dont have that Money!")
             pause()
@@ -152,19 +158,22 @@ def __Game__(money, money_):
         card = hit()
         dealer_cards.append(card)
     
+    
     player_cards_value = ([evaluation.get(pcards) for pcards in player_cards])
     dealer_cards_value = ([evaluation.get(dcards) for dcards in dealer_cards])
 
     [int(elements) for elements in player_cards_value]
     [int(elements) for elements in dealer_cards_value]
     
-
+    
     for element in range(0, len(player_cards_value)):
         total_pcard = total_pcard + player_cards_value[element]
 
     for element in range(0, len(dealer_cards_value)):
         total_dcard = total_dcard + dealer_cards_value[element]
 
+    total_pcard = ace_check(player_cards_value, total_pcard)
+    total_dcard = ace_check(dealer_cards_value, total_dcard)
 
     clear()
     print("The Dealer Deals you a {0}".format(*player_cards))
@@ -183,42 +192,52 @@ def __Game__(money, money_):
     pause()
     clear()
 
-    print(total_dcard, total_pcard)
 
 
     while stand:
             trigger = bool()
             x = str(input("Would you like to Hit/Stand:\n"))
-            stand = bool(Optional(x))
+            if x  in hlist or x in slist:
+                stand = bool(Optional(x))
 
 
-            player_cards_value = ([evaluation.get(pcards) for pcards in player_cards])
-            dealer_cards_value = ([evaluation.get(dcards) for dcards in dealer_cards])
-            [int(elements) for elements in player_cards_value]
-            [int(elements) for elements in dealer_cards_value]
-            
-            for i in range(1):
+                player_cards_value = ([evaluation.get(pcards) for pcards in player_cards])
+                dealer_cards_value = ([evaluation.get(dcards) for dcards in dealer_cards])
+                [int(elements) for elements in player_cards_value]
+                [int(elements) for elements in dealer_cards_value]
                 
-                if stand:
+                for i in range(1):
+                    
+                    if stand:
 
-                    for element in range(2 + i, len(player_cards_value)):
-                        total_pcard += player_cards_value[element]
-
-                if total_pcard >= 21:
-                    trigger = True
-                    stand = False
-                    win = Win_scenario()
-                else:
-                    for element in range(2 + i, len(dealer_cards_value)):
-                        total_dcard += dealer_cards_value[element]
+                        for element in range(2 + i, len(player_cards_value)):
+                            total_pcard += player_cards_value[element]
+                            
+                        total_pcard = ace_check(player_cards_value, total_pcard)
+                        
+                        if total_pcard >= 21:
+                            trigger = True
+                            stand = False
+                            win = Win_scenario()
+                        
+                    else:
+                        
+                        for element in range(2 + i, len(dealer_cards_value)):
+                            total_dcard += dealer_cards_value[element]
+                            
+                        total_dcard = ace_check(dealer_cards_value, total_dcard)
                         
                         if total_dcard >= 21:
                             trigger = True
                             stand = False
                             win = Win_scenario()
-                i += 1
+                        
+                    i += 1
 
-                print(total_dcard, total_pcard)
+                
+            else:
+                print("Invalid Option")
+
 
     if trigger == False and stand == False:
         win = Win_scenario()
@@ -233,7 +252,7 @@ def __Game__(money, money_):
 
     if money > 0:
 
-        print("Would you like to play again? Balance Left: {}".format(money))
+        print("Would you like to play again?")
         y = str(input("\nY/N: "))
         y = y.lower()
         if y in ylist:
@@ -245,6 +264,9 @@ def __Game__(money, money_):
                 money += pot_money
             
             pot_money = 0
+            print("Your New Balance, {}".format(money))
+            pause()
+            clear()
             return __Game__(money, money_)
         else:
             if win == False:
@@ -257,8 +279,13 @@ def __Game__(money, money_):
             pot_money = 0
             print("You Entered With {} and left with {}".format(money_, money))
             pause()
-
-
+    else:
+        print("You Have No more Money")
+        print("You Entered With {} and left with {}".format(money_, money))
+        pause()
+    
+    
+    breakf()
 
 if __name__ == "__main__":
     version = '1.0.0'
@@ -268,7 +295,7 @@ if __name__ == "__main__":
     clear()
 
     print(ascii.settings)
-    money = 1000
+    money = int(input("Money To Start With: "))
     money_ = money
     __Game__(money, money_)
             
