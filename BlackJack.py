@@ -23,12 +23,6 @@ def clear():
     os.system('cls')
 
 
-    
-    
-            
-            
-
-
 def hit():
     card = deck[random.randint(0,len(deck)-1)]
     card_index = deck.index(card)
@@ -46,13 +40,13 @@ def shuffle_deck():
     
     suits = ["Spades", "Diamonds", "Clubs", "Hearts"]
     
-    cards = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+    cards = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
     
     for suit in suits:
         for card in cards:
             deck.append(card + ' of ' + suit)
     for suit in suits:        
-        values.extend([1, 2, 3, 4, 5, 6, 7, 8, 9 , 10, 10, 10, 10, 11])
+        values.extend([1, 2, 3, 4, 5, 6, 7, 8, 9 , 10, 10, 10, 10])
             
     evaluation = dict(zip(deck, values))
 
@@ -126,7 +120,6 @@ def __Game__(money, money_):
     pause()
     clear()
     
-    #FIX THIS
     pot_money = int(input("Money to Put into Pot:\n"))
     if pot_money > money:
             print("You dont have that Money!")
@@ -182,7 +175,7 @@ def __Game__(money, money_):
     clear()
 
 
-
+    #fix stuff below this
     while stand:
             trigger = bool()
             x = str(input("Would you like to Hit/Stand:\n"))
