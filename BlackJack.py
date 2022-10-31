@@ -40,13 +40,13 @@ def shuffle_deck():
     
     suits = ["Spades", "Diamonds", "Clubs", "Hearts"]
     
-    cards = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+    cards = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
     
     for suit in suits:
         for card in cards:
             deck.append(card + ' of ' + suit)
     for suit in suits:        
-        values.extend([1, 2, 3, 4, 5, 6, 7, 8, 9 , 10, 10, 10, 10])
+        values.extend([1, 2, 3, 4, 5, 6, 7, 8, 9 , 10, 10, 10, 10, 11])
             
     evaluation = dict(zip(deck, values))
 
@@ -71,8 +71,6 @@ def Win_scenario():
 
 def Optional(x):
 
-    x = x.lower()
-
     if x in hlist:
         print('You Hit')
         card = hit()
@@ -93,7 +91,7 @@ def Optional(x):
         return False
         
 
-def __Game__(money, money_):
+def __Game__(money):
 
     global player_cards, pot_money, dealer_cards, player_cards_value, dealer_cards_value, total_dcard, total_pcard, hlist, slist, ylist
 
@@ -119,16 +117,18 @@ def __Game__(money, money_):
     print(ascii.black_jack)
     pause()
     clear()
-    
-    pot_money = int(input("Money to Put into Pot:\n"))
+    try:
+        pot_money = int(input("Money to Put into Pot:\n"))
+    except:
+        return __Game__(money)
     if pot_money > money:
             print("You dont have that Money!")
             pause()
-            return __Game__(money, money_)
+            return __Game__(money)
     elif pot_money <= 0:
             print("Invalid Amount")
             pause()
-            return __Game__(money, money_)
+            return __Game__(money)
         
     money -= pot_money
     print("Money In Pot: {}\n Money In Balance: {}".format(pot_money, money))
@@ -178,13 +178,16 @@ def __Game__(money, money_):
     #fix stuff below this
     while stand:
             trigger = bool()
+        
             x = str(input("Would you like to Hit/Stand:\n"))
+            x = x.lower()
             if x  in hlist or x in slist:
                 stand = bool(Optional(x))
 
 
                 player_cards_value = ([evaluation.get(pcards) for pcards in player_cards])
                 dealer_cards_value = ([evaluation.get(dcards) for dcards in dealer_cards])
+                
                 [int(elements) for elements in player_cards_value]
                 [int(elements) for elements in dealer_cards_value]
                 
@@ -194,8 +197,14 @@ def __Game__(money, money_):
 
                         for element in range(2 + i, len(player_cards_value)):
                             total_pcard += player_cards_value[element]
-                            
-                        
+                            for element in range(0, len(player_cards_value)):
+                                if element == 11 and total_pcard > 21:
+                                    element_index = player_cards_value.index(element)
+                                    player_cards_value.pop(element_index)
+                                    player_cards_value.insert(element_index, 1)
+                                    total_pcard -= 11 + 1
+                                
+                                
                         if total_pcard >= 21:
                             trigger = True
                             stand = False
@@ -205,7 +214,12 @@ def __Game__(money, money_):
                         
                         for element in range(2 + i, len(dealer_cards_value)):
                             total_dcard += dealer_cards_value[element]
-                            
+                            for element in range(0, len(player_cards_value)):
+                                if element == 11 and total_dcard > 21:
+                                    element_index = dealer_cards_value.index(element)
+                                    dealer_cards_value.pop(element_index)
+                                    dealer_cards_value.insert(element_index, 1)
+                                    total_dcard -= 11 + 1
                         
                         if total_dcard >= 21:
                             trigger = True
@@ -216,68 +230,62 @@ def __Game__(money, money_):
 
                 
             else:
-                print("Invalid Option")
-
+                raise Exception("Invalid Option")
 
     if trigger == False and stand == False:
         win = Win_scenario()
     
-        
-    if money == 0:
-        if pot_money > 0 and win:
-            money += pot_money + pot_money
-
-        elif pot_money > 0 and win == None:
+    #game winning fixes
+    if money != 0:
+        if win == True:
+            money += pot_money * 2
+            pot_money = 0
+        elif win == None:
             money += pot_money
-
-    elif money > 0:
-
-        print("Would you like to play again?")
-        y = str(input("\nY/N: "))
-        y = y.lower()
-        if y in ylist:
-            if win == False:
-                money -= pot_money
-            elif win:
-                money += pot_money + pot_money
-            elif win == None:
-                money += pot_money
-            
             pot_money = 0
-            print("Your New Balance, {}".format(money))
-            pause()
-            clear()
-            return __Game__(money, money_)
-        else:
-            if win == False:
-                money -= pot_money
-            elif win:
-                money += pot_money
-            elif win == None:
-                money += pot_money
-
+        elif win == False:
             pot_money = 0
-            print("You Entered With {} and left with {}".format(money_, money))
-            pause()
+    elif pot_money != 0:
+        if win == True:
+            money += pot_money * 2
+            pot_money = 0
+        elif win == None:
+            money += pot_money
+            pot_money = 0
+        elif win == False:
+            pot_money = 0
     else:
-        print("You Have No more Money")
-        print("You Entered With {} and left with {}".format(money_, money))
+        print("You Lost All Your Money :( Better Luck Next Time")
         pause()
+    
+    x = input("Play Again? Y/N")
+    if x in ylist:
+        return __Game__(money)
+    
+    else:
+        print("You Ended The Game With {}".format(money))
+
     
     
     breakf()
-
+def __Setting__():
+    print(ascii.settings)
+    try:
+        money = int(input("Money To Start With: "))
+    except:
+        print("Invalid Option")
+        return __Setting__()
+    
+    __Game__(money)
+    
 if __name__ == "__main__":
+    
     version = '1.0.0'
     
     print("Welcome To BlackJack, Made by Artyom Curtis Version {}".format(version))
     pause()
     clear()
-
-    print(ascii.settings)
-    money = int(input("Money To Start With: "))
-    money_ = money
-    __Game__(money, money_)
-            
+    __Setting__()
+    
             
     
