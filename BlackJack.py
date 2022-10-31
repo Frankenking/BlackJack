@@ -23,15 +23,6 @@ def clear():
     os.system('cls')
 
 
-def ace_check(handvalue, total):
-    total = total
-    for element in handvalue:
-        if element == 11 and total > 21:
-            total -= 11
-            return total
-
-        else:
-            return total
     
     
             
@@ -172,8 +163,6 @@ def __Game__(money, money_):
     for element in range(0, len(dealer_cards_value)):
         total_dcard = total_dcard + dealer_cards_value[element]
 
-    total_pcard = ace_check(player_cards_value, total_pcard)
-    total_dcard = ace_check(dealer_cards_value, total_dcard)
 
     clear()
     print("The Dealer Deals you a {0}".format(*player_cards))
@@ -213,7 +202,6 @@ def __Game__(money, money_):
                         for element in range(2 + i, len(player_cards_value)):
                             total_pcard += player_cards_value[element]
                             
-                        total_pcard = ace_check(player_cards_value, total_pcard)
                         
                         if total_pcard >= 21:
                             trigger = True
@@ -225,7 +213,6 @@ def __Game__(money, money_):
                         for element in range(2 + i, len(dealer_cards_value)):
                             total_dcard += dealer_cards_value[element]
                             
-                        total_dcard = ace_check(dealer_cards_value, total_dcard)
                         
                         if total_dcard >= 21:
                             trigger = True
@@ -250,7 +237,7 @@ def __Game__(money, money_):
         elif pot_money > 0 and win == None:
             money += pot_money
 
-    if money > 0:
+    elif money > 0:
 
         print("Would you like to play again?")
         y = str(input("\nY/N: "))
