@@ -5,11 +5,13 @@
 # Version 1.0.0
 ###############################
 
+#I didnt comment anything and the efficency is garbage it's also overcomplicated 💀
 
 import os
 import time
 import ascii_assets as ascii
 import random
+
 
 def breakf():
     pass
@@ -22,7 +24,6 @@ def pause():
 def clear():
     os.system('cls')
 
-
 def hit():
     card = deck[random.randint(0,len(deck)-1)]
     card_index = deck.index(card)
@@ -31,7 +32,7 @@ def hit():
 
 
 def shuffle_deck():
-    global deck, evaluation
+    global deck, evaluation, aces
     
     deck = []
     
@@ -40,13 +41,13 @@ def shuffle_deck():
     
     suits = ["Spades", "Diamonds", "Clubs", "Hearts"]
     
-    cards = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+    cards = ['1', '2', '3','4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
     
     for suit in suits:
         for card in cards:
             deck.append(card + ' of ' + suit)
     for suit in suits:        
-        values.extend([1, 2, 3, 4, 5, 6, 7, 8, 9 , 10, 10, 10, 10, 11])
+        values.extend([10, 11])
             
     evaluation = dict(zip(deck, values))
 
@@ -120,7 +121,10 @@ def __Game__(money):
     try:
         pot_money = int(input("Money to Put into Pot:\n"))
     except:
+        print("Invalid Input")
+        pause()
         return __Game__(money)
+
     if pot_money > money:
             print("You dont have that Money!")
             pause()
@@ -152,7 +156,7 @@ def __Game__(money):
     
     for element in range(0, len(player_cards_value)):
         total_pcard = total_pcard + player_cards_value[element]
-
+        
     for element in range(0, len(dealer_cards_value)):
         total_dcard = total_dcard + dealer_cards_value[element]
 
@@ -183,7 +187,7 @@ def __Game__(money):
             x = x.lower()
             if x  in hlist or x in slist:
                 stand = bool(Optional(x))
-
+                
 
                 player_cards_value = ([evaluation.get(pcards) for pcards in player_cards])
                 dealer_cards_value = ([evaluation.get(dcards) for dcards in dealer_cards])
@@ -197,12 +201,7 @@ def __Game__(money):
 
                         for element in range(2 + i, len(player_cards_value)):
                             total_pcard += player_cards_value[element]
-                            for element in range(0, len(player_cards_value)):
-                                if element == 11 and total_pcard > 21:
-                                    element_index = player_cards_value.index(element)
-                                    player_cards_value.pop(element_index)
-                                    player_cards_value.insert(element_index, 1)
-                                    total_pcard -= 11 + 1
+                            
                                 
                                 
                         if total_pcard >= 21:
@@ -214,12 +213,7 @@ def __Game__(money):
                         
                         for element in range(2 + i, len(dealer_cards_value)):
                             total_dcard += dealer_cards_value[element]
-                            for element in range(0, len(player_cards_value)):
-                                if element == 11 and total_dcard > 21:
-                                    element_index = dealer_cards_value.index(element)
-                                    dealer_cards_value.pop(element_index)
-                                    dealer_cards_value.insert(element_index, 1)
-                                    total_dcard -= 11 + 1
+                            
                         
                         if total_dcard >= 21:
                             trigger = True
@@ -232,10 +226,10 @@ def __Game__(money):
             else:
                 raise Exception("Invalid Option")
 
+
     if trigger == False and stand == False:
         win = Win_scenario()
     
-    #game winning fixes
     if money != 0:
         if win == True:
             money += pot_money * 2
@@ -258,14 +252,16 @@ def __Game__(money):
         print("You Lost All Your Money :( Better Luck Next Time")
         pause()
     
+    print("You have {} left".format(money))
     x = input("Play Again? Y/N")
+    x = x.lower()
     if x in ylist:
+        clear()
         return __Game__(money)
     
     else:
         print("You Ended The Game With {}".format(money))
 
-    
     
     breakf()
 def __Setting__():
