@@ -47,7 +47,7 @@ def shuffle_deck():
         for card in cards:
             deck.append(card + ' of ' + suit)
     for suit in suits:        
-        values.extend([10, 11])
+        values.extend([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11])
             
     evaluation = dict(zip(deck, values))
 
@@ -252,7 +252,7 @@ def __Game__(money):
         print("You Lost All Your Money :( Better Luck Next Time")
         pause()
     
-    print("You have {} left".format(money))
+    print("You have {}$ left".format(money))
     x = input("Play Again? Y/N")
     x = x.lower()
     if x in ylist:
