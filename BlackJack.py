@@ -5,7 +5,7 @@
 # Version 1.0.0
 ###############################
 
-#I didnt comment anything and the efficency is garbage it's also overcomplicated 💀
+#I didnt comment anything and it's also overcomplicated but it works, so i might redo this in the future 
 
 import os
 import time
