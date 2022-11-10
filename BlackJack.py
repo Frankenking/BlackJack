@@ -200,6 +200,7 @@ def __Game__(money):
             else:
                 break
             clear()
+            
         #makes a neat string value of all cards to be revealed at the end of the game
     for i in player_hand:
         player_hand_string += i+ ', '
