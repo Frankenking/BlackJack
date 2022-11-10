@@ -1,7 +1,7 @@
 #a small module for asciiart in my "game" so my code doesnt look terrible
 
 
-
+#😱😱😱😱
 black_jack = """
                                             
         _..-''--'----_.                                        

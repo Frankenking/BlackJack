@@ -17,13 +17,14 @@ import random
 def breakf():
     pass
 
-        #invokes a pause in the console
+        #creates a pause in the console
 def pause():
     os.system('pause')
 
-    #clears the console
+     #clears the console
 def clear():
     os.system('cls')
+
 
         #this function chooses a card from the deck and returns it back then removes it from the deck
 def hit():
@@ -79,6 +80,8 @@ def evaluator(element):
         case 'A':
             return 11
         
+
+
         #the game
 def __Game__(money):
     
@@ -95,6 +98,7 @@ def __Game__(money):
     player_hand_string = str()
     dealer_hand_string = str()
     
+
     #Prompts for money No Cheating!
     pot_money = int(input("Money to Put into Pot:\n"))
     if pot_money < 0 or pot_money > money:
@@ -200,7 +204,7 @@ def __Game__(money):
             else:
                 break
             clear()
-            
+
         #makes a neat string value of all cards to be revealed at the end of the game
     for i in player_hand:
         player_hand_string += i+ ', '
@@ -208,6 +212,7 @@ def __Game__(money):
     for i in dealer_hand:
         dealer_hand_string += i+ ', '
         
+
         #the winning conditions simple math
     if player_hand_num > 21:
         print("You Lose, you had {} The dealer had {} You lost {}$".format(player_hand_string, dealer_hand_string, pot_money))
