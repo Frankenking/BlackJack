@@ -32,29 +32,22 @@ def hit():
     deck.pop(card_index)
     return(card)
 
-        #this function shuffles the deck by making an array containg all cards in a full deck
+        #this function shuffles the deck by making an array containing all cards in a full deck
 def shuffle_deck():
     global deck
     
     deck = []
     
-    values = []
-    
     suits = ["Spades", "Diamonds", "Clubs", "Hearts"]
     
-    cards = ['1','2','3','4','5','6','7','8','9','10','J','Q','K','A']
+    cards = ['1','2','3','4','5','6','7','8','9','Ten','J','Q','K','A']
     
     for suit in suits:
         for card in cards:
             deck.append(card + ' of ' + suit)
-
-    for suit in suits:        
-        values.extend([1,2,3,4,5,6,7,8,9,10,10,10,10,11]) #applys values to each entry
             
 
-
-        #evaluates the given number/face and returns
-
+        #evaluates the given number/face and returns the corresponding value
 def evaluator(element):
     match element[0]:
         case '1':
@@ -75,6 +68,8 @@ def evaluator(element):
             return 8
         case '9':
             return 9
+        case 'T':
+            return 10
         case 'J':
             return 10
         case 'Q':
@@ -83,11 +78,9 @@ def evaluator(element):
             return 10
         case 'A':
             return 11
-        case _:
-            return 10
-
+        
+        #the game
 def __Game__(money):
-    
     
     shuffle_deck()
     
@@ -96,7 +89,6 @@ def __Game__(money):
     againValues = ['n', 'no', 'y', 'yes']
     player_hand = []
     dealer_hand = []
-    
     player_hand_num = int()
     dealer_hand_num = int()
 
@@ -118,7 +110,7 @@ def __Game__(money):
     #deals 2 cards and increments 'i' by 1 to print the next item in list
     i = 0
     for i in range(2):
-        player_hand.append(hit())  
+        player_hand.append(hit())   #adds to hand
         print("You Recived a", player_hand[i])
         time.sleep(1)
         dealer_hand.append(hit())
@@ -129,9 +121,9 @@ def __Game__(money):
         i += 1
         time.sleep(1)
     
-    #for every card in your hand it is added to a numerical total that then is adjusted for aces
+        #for every card in your hand and dealer hand it is added to a numerical total that then is adjusted for aces
     for element in player_hand:
-            element = evaluator(element)
+            element = evaluator(element)    #evlautes the card and adds it to a new variable
             player_hand_num += element
             if player_hand_num > 21 and element == 11:
                 print("Fixed For Ace")
@@ -155,7 +147,7 @@ def __Game__(money):
             option = input("Stand or Hit:\n")
             option = option.lower()
             
-            if option in optionValues[:2]: #gets the first two values
+            if option not in optionValues[:2]: #gets the first two values for ''hit
                 
                 player_hand.append(hit())
                 element = player_hand[len(player_hand)-1]
@@ -207,7 +199,7 @@ def __Game__(money):
                 print("The Dealer Drew")
             else:
                 break
-            
+            clear()
         #makes a neat string value of all cards to be revealed at the end of the game
     for i in player_hand:
         player_hand_string += i+ ', '
@@ -253,6 +245,8 @@ def __Game__(money):
         print("Thanks For Playing!")
 
     breakf()
+
+    #main 
 if __name__ == "__main__":
     
     version = '1.0.0'
