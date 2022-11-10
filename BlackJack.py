@@ -14,9 +14,6 @@ import random
 
 #FUNCTIONS
 
-def breakf():
-    pass
-
         #creates a pause in the console
 def pause():
     os.system('pause')
@@ -249,8 +246,6 @@ def __Game__(money):
         
     else:
         print("Thanks For Playing!")
-
-    breakf()
 
     #main 
 if __name__ == "__main__":
