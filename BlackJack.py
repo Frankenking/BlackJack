@@ -78,7 +78,24 @@ def evaluator(element):
             return 11
         
 
-
+def input_handler(var):
+    match var[0]:
+        case 'p':
+            try:
+                output = int(input('Money To Put Into Pot: '))
+                if output < 0 or output > money:
+                    pass
+                return output
+            except:
+                clear()
+                return input_handler(var)
+        case 'o':
+            try:
+                output = str(input("Stand/Hit: "))
+                return output
+            except:
+                clear()
+                return input_handler(var)
         #the game
 def __Game__(money):
     
@@ -87,23 +104,21 @@ def __Game__(money):
     #GAME VARIABLES
     optionValues = ['s', 'stand', 'h', 'hit']
     againValues = ['n', 'no', 'y', 'yes']
+    
     player_hand = []
     dealer_hand = []
+    
     player_hand_num = int()
     dealer_hand_num = int()
-
+    
     player_hand_string = str()
     dealer_hand_string = str()
     
 
-    #Prompts for money No Cheating!
-    pot_money = int(input("Money to Put into Pot:\n"))
-    if pot_money < 0 or pot_money > money:
-        print("Cheaters Never Prosper")
-        pause()
-        raise Exception("Begone!")
-    money -= pot_money
+    #Prompts for money
     
+    pot_money = input_handler('pot_money')
+    money -= pot_money
     print("Your Balance: {}$\n Money in the Pot: {}$".format(money, pot_money))
     pause()
     clear()
@@ -145,7 +160,7 @@ def __Game__(money):
     while True:
         
         #prompts for user input to stand/hit the rest of the code is the same as above just looped
-            option = input("Stand or Hit:\n")
+            option = input_handler('option')
             option = option.lower()
             
             if option not in optionValues[:2]: #gets the first two values for ''hit
@@ -182,9 +197,9 @@ def __Game__(money):
                         break
                     
                 print("The Dealer Drew")
-                
             elif dealer_hand_num <= 16:
-                        
+                
+                print("You Standed")
                 dealer_hand.append(hit())
                 element = dealer_hand[len(dealer_hand)-1]
                         
@@ -260,6 +275,7 @@ if __name__ == "__main__":
     pause()
     clear()
     
+    global money
     money = 100
     
     print("You Start With 100$ you may want to try to increase it.")
