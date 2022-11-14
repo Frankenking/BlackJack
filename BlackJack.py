@@ -77,7 +77,7 @@ def evaluator(element):
         case 'A':
             return 11
         
-
+    #just a input handler in case the user decides to input something that would crash the program
 def input_handler(var):
     match var[0]:
         case 'p':
@@ -96,6 +96,7 @@ def input_handler(var):
             except:
                 clear()
                 return input_handler(var)
+            
         #the game
 def __Game__(money):
     
@@ -215,6 +216,7 @@ def __Game__(money):
                 print("The Dealer Drew")
             else:
                 break
+            pause()
             clear()
 
         #makes a neat string value of all cards to be revealed at the end of the game
@@ -237,6 +239,10 @@ def __Game__(money):
     elif player_hand_num < dealer_hand_num:
         print("You Lose, you had {} The dealer had {} You lost {}$".format(player_hand_string, dealer_hand_string, pot_money))
         pot_money = 0
+        
+    elif player_hand_num == dealer_hand_num:
+        print("Tie!, you had {} The dealer had {} You win {}$")
+        money += pot_money
         
     else:
         print("You Win, you had {} The dealer had {} You win {}$".format(player_hand_string, dealer_hand_string, pot_money))
